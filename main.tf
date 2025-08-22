@@ -12,14 +12,8 @@ resource "aws_instance" "ram" {
   tags = {
     Name = "Development Server"
   }
-
-  provisioner "local-exec" {
-    command = <<EOT
-      echo "[webserver]">$WORKSPACE/inventory.ini
-      echo "${self.public_ip} ansible_user=ubuntu" >> $WORKSPACE/inventory.ini
-      sleep 60
-      echo "Terraform successfully run and Inventory created"
-    EOT
-  }
 }
 
+output "public_ip" {
+  value = aws_instance.ram.public_ip
+}
