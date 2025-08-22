@@ -5,7 +5,7 @@ provider "aws" {
 resource "aws_instance" "ram" {
   ami                    = "ami-0c82cd70874a842cf"
   instance_type          = "t3.micro"
-  key_name               = "devops1"
+  key_name               = "webserver-apache-key"
   subnet_id              = "subnet-049f77a69bee62037"
   vpc_security_group_ids = ["sg-04049b72b0df7ca4d"]
 
@@ -22,3 +22,4 @@ resource "aws_instance" "ram" {
     EOT
   }
 }
+
