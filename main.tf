@@ -9,7 +9,7 @@ region = "ap-southeast-3"
 resource "aws_instance" "ram" {
 
     instance_type = "t3.micro"
-    ami = "ami-0f918f7e67a3323f0"
+    ami = "ami-0c82cd70874a842cf"
     key_name = "devops1"
     vpc_security_group_ids = ["sg-04049b72b0df7ca4d"]
     tags = {
@@ -25,4 +25,5 @@ resource "aws_instance" "ram" {
        echo "Terraform successfully run and Inventory created"        
        EOT 
      }
+
 }
