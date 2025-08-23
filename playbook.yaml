@@ -4,11 +4,6 @@
   become: true
 
   tasks:
-    - name: Ensure python3 is installed (for Ansible)
-      raw: |
-        which python3 || (apt-get update && apt-get install -y python3)
-      changed_when: false
-
     - name: Update apt cache
       apt:
         update_cache: yes
