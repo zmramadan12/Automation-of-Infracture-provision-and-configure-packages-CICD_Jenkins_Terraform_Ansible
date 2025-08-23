@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 resource "aws_instance" "ram" {
-  ami                    = "ami-0c82cd70874a842cf"
+  ami                    = "ami-003a6aabfe9d0683e"
   instance_type          = "t3.micro"
   key_name               = "webserver-apache-key"
   subnet_id              = "subnet-049f77a69bee62037"
@@ -17,4 +17,5 @@ resource "aws_instance" "ram" {
 output "public_ip" {
   value = aws_instance.ram.public_ip
 }
+
 
