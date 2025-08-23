@@ -2,7 +2,13 @@
 - name: Install multiple packages package
   hosts: web
   become: true
+
   tasks:
+    - name: Ensure python3 is installed (for Ansible)
+      raw: |
+        which python3 || (apt-get update && apt-get install -y python3)
+      changed_when: false
+
     - name: Update apt cache and install python3-apt
       apt:
         name: python3-apt
@@ -20,7 +26,7 @@
 
     - name: Copy index.html file
       copy:
-        src: "/absolute/path/to/index.html"       
+        src: "index.html"      # pastikan index.html ada di Jenkins workspace root
         dest: "/var/www/html/index.html"
 
     - name: Start and enable apache2 service
