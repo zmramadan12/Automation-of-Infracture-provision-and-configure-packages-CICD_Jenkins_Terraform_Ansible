@@ -9,11 +9,14 @@
         which python3 || (apt-get update && apt-get install -y python3)
       changed_when: false
 
-    - name: Update apt cache and install python3-apt
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install python3-apt
       apt:
         name: python3-apt
         state: present
-        update_cache: yes
 
     - name: Install required packages
       apt:
@@ -22,11 +25,10 @@
           - tree
           - apache2
         state: present
-        update_cache: yes
 
     - name: Copy index.html file
       copy:
-        src: "index.html"      # pastikan index.html ada di Jenkins workspace root
+        src: "index.html"
         dest: "/var/www/html/index.html"
 
     - name: Start and enable apache2 service
