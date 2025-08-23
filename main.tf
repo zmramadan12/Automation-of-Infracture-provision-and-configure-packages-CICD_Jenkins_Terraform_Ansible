@@ -7,7 +7,7 @@ resource "aws_instance" "ram" {
   instance_type          = "t3.micro"
   key_name               = "webserver-apache-key"
   subnet_id              = "subnet-049f77a69bee62037"
-  vpc_security_group_ids = ["sg-04049b72b0df7ca4d"]
+  vpc_security_group_ids = ["sg-03178d4210f26d464"]
 
   tags = {
     Name = "Development Server"
@@ -17,3 +17,4 @@ resource "aws_instance" "ram" {
 output "public_ip" {
   value = aws_instance.ram.public_ip
 }
+
