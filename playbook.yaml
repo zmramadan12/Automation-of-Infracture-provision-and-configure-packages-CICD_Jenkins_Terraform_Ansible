@@ -3,33 +3,28 @@
   hosts: web
   become: true
   tasks:
-    - name: install unzip
+    - name: Update apt cache and install python3-apt
       apt:
-        name: unzip
+        name: python3-apt
         state: present
         update_cache: yes
 
-    - name: install tree
+    - name: Install required packages
       apt:
-        name: tree
-        state: present
-        update_cache: yes
-
-    - name: install httpd
-      apt:
-        name: apache2
+        name:
+          - unzip
+          - tree
+          - apache2
         state: present
         update_cache: yes
 
     - name: Copy index.html file
       copy:
-        src: "/absolute/path/to/index.html"
+        src: "/absolute/path/to/index.html"       
         dest: "/var/www/html/index.html"
 
-    - name: start httpd
+    - name: Start and enable apache2 service
       service:
         name: apache2
         state: started
-
-
-
+        enabled: yes
