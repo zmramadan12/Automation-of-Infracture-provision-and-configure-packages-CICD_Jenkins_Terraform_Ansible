@@ -1,3 +1,4 @@
+groovy
 pipeline {
     agent any
 
@@ -42,27 +43,41 @@ pipeline {
             steps {
                 script {
                     def ip = sh(script: 'terraform output -raw public_ip', returnStdout: true).trim()
-                    def sshKeyPath = "/var/lib/jenkins/workspace/JenkinsTerraformAnsible/webserver-apache-key.pem"
-                    def inventoryContent = "[web]\n${ip} ansible_user=ec2-user ansible_ssh_private_key_file=${sshKeyPath}\n"
+                    def inventoryContent = "[web]\n${ip} ansible_user=ec2-user ansible_ssh_private_key_file=${WORKSPACE}/webserver-apache-key.pem\n"
                     writeFile file: 'inventory.ini', text: inventoryContent
                     sh 'chmod 400 inventory.ini'
-                    sh 'cat inventory.ini'  // supaya kita bisa lihat isi file di log
+                    sh 'cat inventory.ini'
                     echo "inventory.ini created with content above"
+                }
+            }
+        }
+
+        stage('Fix Workspace Permission') {
+            steps {
+                sh '''
+                  sudo chown -R $(whoami) ${WORKSPACE} || true
+                  chmod -R u+w ${WORKSPACE}
+                '''
+            }
+        }
+
+        stage('Upload SSH Key') {
+            steps {
+                withCredentials([file(credentialsId: 'EC2_PEM_FILE', variable: 'SSH_KEY_FILE')]) {
+                    // Aman tanpa Groovy string interpolation langsung di shell script
+                    sh(script: '''cp "${SSH_KEY_FILE}" "${WORKSPACE}/webserver-apache-key.pem" && chmod 400 "${WORKSPACE}/webserver-apache-key.pem"''')
                 }
             }
         }
 
         stage('Run Ansible Playbook') {
             steps {
-                withCredentials([file(credentialsId: 'EC2_PEM_FILE', variable: 'SSH_KEY_FILE')]) {
-                    sh """
-                      chmod 400 "${SSH_KEY_FILE}"
-                      chmod 400 "${WORKSPACE}/inventory.ini"
-                      ansible-playbook -i "${WORKSPACE}/inventory.ini" "${WORKSPACE}/playbook.yaml" \\
-                        --private-key "${SSH_KEY_FILE}" \\
-                        --ssh-extra-args="-o StrictHostKeyChecking=no"
-                    """
-                }
+                sh '''
+                  chmod 400 "${WORKSPACE}/inventory.ini"
+                  ansible-playbook -i "${WORKSPACE}/inventory.ini" "${WORKSPACE}/playbook.yaml" \\
+                    --private-key "${WORKSPACE}/webserver-apache-key.pem" \\
+                    --ssh-extra-args='-o StrictHostKeyChecking=no'
+                '''
             }
         }
     }
