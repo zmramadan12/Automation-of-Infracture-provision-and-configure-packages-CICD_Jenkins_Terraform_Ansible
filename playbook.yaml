@@ -1,7 +1,7 @@
 ---
 - name: Install multiple packages package
   hosts: web
-  become: yes
+  become: true
   tasks:
     - name: install unzip
       apt:
@@ -30,5 +30,6 @@
       service:
         name: apache2
         state: started
+
 
 
