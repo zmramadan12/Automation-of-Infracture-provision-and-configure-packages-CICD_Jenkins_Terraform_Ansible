@@ -48,6 +48,9 @@ Install recommended plugins.
 
 Add AWS credentials under:
 
+<img width="1901" height="441" alt="image" src="https://github.com/user-attachments/assets/c695d60a-fd8c-4853-92b3-6e95ff377170" />
+
+
 Manage Jenkins → Credentials
 
 Use Secret Text for AWS keys and Secret File for .pem key.
@@ -73,6 +76,9 @@ Run the pipeline → Terraform provisions EC2, and Ansible configures it.
 
 image
 After a successful build, copy the Public IP of the EC2 instance.
+
+<img width="1919" height="1021" alt="Screenshot 2025-08-23 185946" src="https://github.com/user-attachments/assets/f1589ba7-cb29-4d33-a672-c467a7f95908" />
+
 
 take the public ip of newly ec2 and open it on browser to see your static website .
 
