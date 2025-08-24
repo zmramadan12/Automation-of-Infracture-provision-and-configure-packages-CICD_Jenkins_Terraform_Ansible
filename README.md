@@ -58,6 +58,9 @@ image
 image
 Restart Jenkins:
 
+<img width="1919" height="1021" alt="image" src="https://github.com/user-attachments/assets/854b9c15-3e99-496b-a06f-4ea4252876eb" />
+
+
 http://:8080/restart
 
 4️⃣ Automate EC2 Provisioning with CI/CD
